@@ -173,9 +173,11 @@
             Console.WriteLine("\t\t미로 찾기 게임");
             Console.WriteLine();
 
-            
-            Console.WriteLine($"\t\t{(menu==0?"▶︎":" ")} 게임 시작");
-            Console.WriteLine($"\t\t{(menu==1?"▶︎":" ")} 게임 방법");
+            Console.ForegroundColor = (menu == 0) ? ConsoleColor.Green : ConsoleColor.Gray;
+            Console.WriteLine($"\t\t{(menu==0? "▶" : " ")} 게임 시작");
+            Console.ForegroundColor = (menu == 1) ? ConsoleColor.Green : ConsoleColor.Gray;
+            Console.WriteLine($"\t\t{(menu==1? "▶" : " ")} 게임 방법");
+            Console.ResetColor();
             Console.WriteLine();
 
             Console.WriteLine("\t   - Enter를 눌러 메뉴 선택 -");
@@ -192,7 +194,7 @@
             Console.WriteLine("  - 플레이어 이동 : wasd 혹은 상하좌우 키");
             Console.WriteLine("  - 미로에 흩뿌려진 점을 먹으며 목표 지점까지 이동하자!");
             Console.WriteLine("  - 점을 먹으면 포인트가 증가!");
-            Console.WriteLine("  - 점 : '✦', 목표 지점 : '★'");
+            Console.WriteLine("  - 점 : '＊', 목표 지점 : '♥'");
             Console.WriteLine("  - 함정이 숨겨져 있다!\n    함정을 밟으면 랜덤한 위치로 순간이동!");
             Console.WriteLine();
             Console.WriteLine("\t    - Enter를 눌러 돌아가기 -");
@@ -305,18 +307,18 @@
                     if (map[y, x] == 'G')
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("★");
+                        Console.Write("♥");
                     }
                     else if (map[y, x] == '#')
                     {
                         // Console.BackgroundColor = ConsoleColor.White;
                         Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.Write("█");
+                        Console.Write("▒");
                     }
                     else if (map[y, x] == 'd'||map[y,x]=='T')
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("✦");
+                        Console.Write("d");
                         
                     }
                     else
@@ -336,7 +338,7 @@
         {
             //스테이지 정보, 플레이어 포인트 표시
             Console.WriteLine("---------------------------------------------------");
-            Console.Write($"스테이지 {stage.stageNum}\t\t포인트 {player.point}P");
+            Console.Write($"스테이지 {stage.stageNum}   포인트 {player.point}P   이동 횟수 {moveCnt}회");
             
         }
 
@@ -351,7 +353,7 @@
             else
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("●");  // 플레이어 표시
+                Console.Write("○");  // 플레이어 표시
             }
             
             Console.ResetColor();
@@ -423,10 +425,18 @@
                     return;
                 case 'd': 
                     player.point += 5;
+
+                    //이동 횟수 증가
+                    moveCnt++;
+
                     break;
                 case 'G' ://점 또는 목표지점
                     stageClear = true;
                     player.point += 10;
+
+                    //이동 횟수 증가
+                    moveCnt++;
+
                     break;
                 case 'T': 
                     //플레이어 상태를 트랩 밟은 상태로 변경
@@ -434,6 +444,10 @@
                     //플레이엉 위치를 이동 시키기 & 플레이어 있던 곳 빈칸으로 처리
                     mapArray[player.pos.y, player.pos.x] = ' ';
                     player.pos = targetPos;
+
+                    //이동 횟수 증가
+                    moveCnt++;
+
                     //화면 갱신 (다시 그리기)
                     Render(player, stage);
                     
@@ -455,8 +469,8 @@
             //플레이어 트랩 상태 복구
             player.isTrapped = false;
             
-            //이동 횟수 증가
-            moveCnt++;
+            ////이동 횟수 증가 => 트랩 구현 추가하면서 렌더링 갱신으로 시점 변경으로 인해 swich문 안으로 이동
+            //moveCnt++;
 
         }
 
@@ -494,9 +508,9 @@
             Console.WriteLine("---------------------------------------------------");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("\t(◜o◝)︎︎︎✌︎ 게임 클리어 (◜o◝)︎︎︎✌︎");
-            Console.WriteLine($"\t\t총 포인트 : {player.point}");
-            Console.WriteLine($"\t\t총 이동 횟수 : {moveCnt}");
+            Console.WriteLine("\t(◜o◝)︎✌︎ 게임 클리어 (◜o◝)︎✌︎");
+            Console.WriteLine($"\t\t총 포인트 : {player.point}P");
+            Console.WriteLine($"\t\t총 이동 횟수 : {moveCnt}회");
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("---------------------------------------------------");
