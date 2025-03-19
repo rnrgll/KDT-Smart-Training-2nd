@@ -194,7 +194,7 @@
             Console.WriteLine("  - 플레이어 이동 : wasd 혹은 상하좌우 키");
             Console.WriteLine("  - 미로에 흩뿌려진 점을 먹으며 목표 지점까지 이동하자!");
             Console.WriteLine("  - 점을 먹으면 포인트가 증가!");
-            Console.WriteLine("  - 점 : '＊', 목표 지점 : '♥'");
+            Console.WriteLine("  - 점 : 'd', 목표 지점 : '♥'");
             Console.WriteLine("  - 함정이 숨겨져 있다!\n    함정을 밟으면 랜덤한 위치로 순간이동!");
             Console.WriteLine();
             Console.WriteLine("\t    - Enter를 눌러 돌아가기 -");
