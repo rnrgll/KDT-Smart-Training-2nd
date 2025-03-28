@@ -21,6 +21,15 @@ public class BracketChecker
             }
             else if (c == ')' || c == ']' || c == '}')
             {
+                //스택에 아무것도 없는 상황. 열린 괄호가 없이 닫힌 괄호가 먼저 나온 상황
+                //스택에 아무것도 없을 때 pop 하려고 하면 Exception 발생
+                if (openBracketStack.Count == 0)
+                {
+                    answer = false;
+                    break;
+                }
+                
+                
                 char openBracket = openBracketStack.Pop();
                 if (c == ')') answer = openBracket == '(';
                 else if (c == ']') answer = openBracket == '[';
