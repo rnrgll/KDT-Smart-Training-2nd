@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform targetTransform;
     private Vector3 positionOffset;
@@ -12,7 +12,8 @@ public class CameraFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        positionOffset = transform.position - targetTransform.position;
+        if(targetTransform!=null)
+            positionOffset = transform.position - targetTransform.position;
     }
 
     // Update is called once per frame
@@ -23,6 +24,7 @@ public class CameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = targetTransform.position + positionOffset;
+        if(targetTransform!=null)
+            transform.position = targetTransform.position + positionOffset;
     }
 }

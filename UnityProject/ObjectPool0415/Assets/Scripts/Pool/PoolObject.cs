@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class PoolObject : MonoBehaviour
 {
-    [FormerlySerializedAs("retrunPool")] public ObjectPool returnPool;
+    public ObjectPool returnPool;
     [SerializeField] private float returnTime;
     private float elapsed = 0f;
     protected virtual void OnEnable()

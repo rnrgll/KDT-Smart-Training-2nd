@@ -38,23 +38,26 @@ public class TurretControl : MonoBehaviour
         {
             //회전량
             float delatAngle = w * turretRotateSpeed * Time.deltaTime;
-        
-            //현재 회전 각도 구하기
-            //tank 몸체를 기준으로 회전 각도를 구하기
-            float currentAngle = Vector3.SignedAngle(tankControl.transform.forward, transform.forward, Vector3.up);
-        
-            //다음 회전 각도 = 현재 회전 각도 + delta
-            float nextAngle = currentAngle + delatAngle;
+
+
+            #region 회전 제한(취소)
+            // //현재 회전 각도 구하기
+            // //tank 몸체를 기준으로 회전 각도를 구하기
+            // float currentAngle = Vector3.SignedAngle(tankControl.transform.forward, transform.forward, Vector3.up);
+            //
+            // //다음 회전 각도 = 현재 회전 각도 + delta
+            // float nextAngle = currentAngle + delatAngle;
+            //
+            // //범위 보정
+            // nextAngle = Mathf.Clamp(nextAngle, -maxTurretAngle, +maxTurretAngle);
+            //
+            // //최종 회전해야할 회전량 = 보정된 각도 - 현재 각도
+            // float finalAngle = nextAngle - currentAngle;
             
-            //범위 보정
-            nextAngle = Mathf.Clamp(nextAngle, -maxTurretAngle, +maxTurretAngle);
-            
-            //최종 회전해야할 회전량 = 보정된 각도 - 현재 각도
-            float finalAngle = nextAngle - currentAngle;
-        
-            
+            #endregion
+           
             //회전 적용
-            transform.Rotate(Vector3.up, finalAngle);
+            transform.Rotate(Vector3.up, delatAngle,Space.World);
         }
      
     }

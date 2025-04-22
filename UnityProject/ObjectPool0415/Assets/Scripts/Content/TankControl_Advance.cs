@@ -24,6 +24,7 @@ public class TankControl_Advance : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Awake 호출");
         shooter = GetComponent<Shooter>();
         turret = GetComponentInChildren<TurretControl>().transform;
     }
@@ -74,5 +75,21 @@ public class TankControl_Advance : MonoBehaviour
 
         }
         
+    }
+    
+    
+    //충돌
+    private void OnCollisionEnter(Collision other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Monster"))
+        {
+            Debug.Log("탱크 파괴");
+            //Destroy(gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        EffectPool.Instance.GetPoolObject(transform.position, Quaternion.identity);
     }
 }

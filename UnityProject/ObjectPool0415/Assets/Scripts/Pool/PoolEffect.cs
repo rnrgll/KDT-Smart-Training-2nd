@@ -12,12 +12,14 @@ public class PoolEffect : PoolObject
     private void Awake()
     {
         _particleSystem = GetComponent<ParticleSystem>();
+        var main = _particleSystem.main;
+        main.stopAction = ParticleSystemStopAction.Callback;
     }
 
 
     protected override void OnEnable()
     {
-        StartCoroutine(ReturnAfterParticlePlay());
+        _particleSystem.Play();
     }
 
     protected override void Update()
@@ -25,10 +27,16 @@ public class PoolEffect : PoolObject
         //
     }
 
-    private IEnumerator ReturnAfterParticlePlay()
+    // private IEnumerator ReturnAfterParticlePlay()
+    // {
+    //     _particleSystem.Play();
+    //     yield return new WaitWhile(() => _particleSystem.isPlaying);
+    //     ReturnToPool();
+    // }
+    
+    //코루틴이 아닌 콜백 방식으로 오브젝트 풀 반환 구현
+    private void OnParticleSystemStopped()
     {
-        _particleSystem.Play();
-        yield return new WaitWhile(() => _particleSystem.isPlaying);
         ReturnToPool();
     }
 }
