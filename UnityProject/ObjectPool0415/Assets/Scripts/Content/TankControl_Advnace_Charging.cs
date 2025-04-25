@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class TankControl_Advance : MonoBehaviour
+public class TankControl_Advance_Charging : MonoBehaviour
 {
     //조작키
+    [FormerlySerializedAs("autoShootKeyCode")]
     [FormerlySerializedAs("shootKeyCode")]
     [Header("Key Control")]
-    [SerializeField] private KeyCode autoShootKeyCode;
+    [SerializeField] private KeyCode chargingShootKeyCode;
     [SerializeField] private KeyCode moveNorthKeyCode;
     [SerializeField] private KeyCode moveSouthdKeyCode;
     [SerializeField] private KeyCode moveEastKeycode;
@@ -17,43 +18,33 @@ public class TankControl_Advance : MonoBehaviour
 
     [Header("Speed Control")] 
     [SerializeField] private float moveSpeed = 10;
-    [SerializeField] private float rotateSpeed = 360;
-     
-    private WaitForSeconds _delay;
-    private Coroutine _AutoShootCoroutine;
-    
-    private Shooter shooter;
-    private Transform turret;
 
-    [SerializeField] private float delayTime = 0.5f;
+    [SerializeField] private float rotateSpeed = 360;
+
+
+    private Coroutine chargingCoroutine;
     
+    
+   private Shooter shooter;
+   private Transform turret;
+
     private void Awake()
     {
         shooter = GetComponent<Shooter>();
         turret = GetComponentInChildren<TurretControl>().transform;
-        
-        _delay = new WaitForSeconds(delayTime);
-        _AutoShootCoroutine = null;
+
+        chargingCoroutine = null;
     }
 
     // Update is called once per frame
     void Update()
     {
         //연사
-        if (Input.GetKeyDown(autoShootKeyCode))
+        if (Input.GetKeyDown(chargingShootKeyCode))
         {
-            if (_AutoShootCoroutine == null)
+            if (chargingCoroutine == null)
             {
-                _AutoShootCoroutine = StartCoroutine(AutoShootAfterDelay());
-            }
-        }
-
-        if (Input.GetKeyUp(autoShootKeyCode))
-        {
-            if (_AutoShootCoroutine != null)
-            {
-                StopCoroutine(_AutoShootCoroutine);
-                _AutoShootCoroutine = null;
+                chargingCoroutine = StartCoroutine(ChargingShoot());
             }
         }
 
@@ -103,33 +94,32 @@ public class TankControl_Advance : MonoBehaviour
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
-            Debug.Log("탱크 파괴");
             Destroy(gameObject);
         }
     }
 
-    
     private void OnDestroy()
     {
-        if (EffectPool.Instance != null)
-        {
-            EffectPool.Instance.GetPoolObject(transform.position, Quaternion.identity);
-        }
-           
+        if(EffectPool.Instance!=null)
+           EffectPool.Instance.GetPoolObject(transform.position, Quaternion.identity);
     }
     
     
-    private IEnumerator AutoShootAfterDelay()
+    private IEnumerator ChargingShoot()
     {
+        float time = 0f;
         while (true)
         {
-            shooter.Shoot();
+            time += Time.deltaTime * 30;
+            yield return null;
 
-            yield return _delay;
+            if (Input.GetKeyUp(chargingShootKeyCode))
+                break;
         }
-        
+
+        float speed = Mathf.Clamp(time, 10f, 30f);
+
+        shooter.Shoot(speed);
+        chargingCoroutine = null;
     }
-    
-    
-    
 }

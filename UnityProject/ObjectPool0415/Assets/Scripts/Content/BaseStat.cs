@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BaseStat : MonoBehaviour
 {
@@ -22,22 +24,29 @@ public class BaseStat : MonoBehaviour
             }
 
             hp = value;
+            OnHpChanged?.Invoke(hp);
         }
     }
 
     public int MaxHp => maxHp;
     public int Attack => attack;
 
+    public event UnityAction<int> OnHpChanged;
+
+    private void Awake()
+    {
+        OnHpChanged = null;
+    }
 
     private void Start()
     {
         Init();
+        
     }
 
     protected virtual void Init()
     {
         Hp = MaxHp;
-        Debug.Log(Hp);
     }
     
     

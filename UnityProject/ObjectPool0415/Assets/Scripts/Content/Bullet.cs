@@ -24,6 +24,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"<color=yellow>{other.name}</color>");
         //파티클 뿌리기
        EffectPool.Instance.GetPoolObject(transform.position, Quaternion.identity);
         

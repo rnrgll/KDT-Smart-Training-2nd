@@ -15,14 +15,17 @@ public class Shooter : MonoBehaviour
     
     //오브젝트 풀
     [SerializeField] private ObjectPool bulletPool;
+
+   
+    
+    
+   
     
     
     
     private void Awake()
     {
         
-        
-     
     }
 
 
@@ -45,7 +48,25 @@ public class Shooter : MonoBehaviour
             bullet = bulletPool.GetPoolObject(bulletSpawnPosition.position, bulletSpawnPosition.rotation).gameObject;
         }
 
-        bullet.GetComponent<Rigidbody>().velocity = bulletSpawnPosition.forward * bullet.GetComponent<Bullet>().Speed; //방향, 속도 설정
+        bullet.GetComponent<Rigidbody>().velocity =
+            bulletSpawnPosition.forward * bullet.GetComponent<Bullet>().Speed; //방향, 속도 설정
+
+    }
+    
+    public void Shoot(float speed)
+    {
+        GameObject bullet;
+        if (bulletPool == null)
+        {
+            bullet = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        }
+        else
+        {
+            bullet = bulletPool.GetPoolObject(bulletSpawnPosition.position, bulletSpawnPosition.rotation).gameObject;
+        }
+
+        bullet.GetComponent<Rigidbody>().velocity =
+            bulletSpawnPosition.forward * speed; //방향, 속도 설정
 
     }
 }

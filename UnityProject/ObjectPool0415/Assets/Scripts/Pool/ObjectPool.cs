@@ -29,6 +29,7 @@ public class ObjectPool : MonoBehaviour
 
     public PoolObject GetPoolObject(Vector3 position, Quaternion rotataion)
     {
+        if (pool == null) return null;
         //pool에 남아있는 오브젝트가 없으면 오브젝트를 생성해서 반환한다.
         if (pool.Count == 0)
         {
@@ -48,8 +49,6 @@ public class ObjectPool : MonoBehaviour
         //position, rotation 설정 후
         instance.transform.position = position;
         instance.transform.rotation = rotataion;
-        
-        Debug.Log(instance.name);
         
         
         //활성화 처리한다.
