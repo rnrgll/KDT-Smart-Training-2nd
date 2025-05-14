@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
@@ -8,30 +9,31 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            if(_instance==null)
-                CreateInstace();
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<T>();
+               DontDestroyOnLoad(_instance);
+            }
             return _instance;
         }
     }
 
-    public static void CreateInstace()
+    private void Awake()
     {
-        _instance = FindObjectOfType<T>();
-        if (_instance == null)
+        SingletonInit();
+    }
+    
+    protected void SingletonInit()
+    {
+        if (_instance != null && _instance != this)
         {
-            GameObject go = new GameObject(typeof(T).Name);
-            _instance = go.AddComponent<T>();
+            Destroy(gameObject);
         }
-        DontDestroyOnLoad(_instance.gameObject);
-        
+        else
+        {
+            _instance = this as T;
+            DontDestroyOnLoad(_instance.gameObject);
+        }
     }
 
-    public static void ReleaseInstance()
-    {
-        if (_instance != null)
-        {
-            Destroy(_instance.gameObject);
-            _instance = null;
-        }
-    }
 }

@@ -27,16 +27,13 @@ public class Bullet : MonoBehaviour
         Debug.Log($"<color=yellow>{other.name}</color>");
         //파티클 뿌리기
        EffectPool.Instance.GetPoolObject(transform.position, Quaternion.identity);
-        
-       BaseStat target = other.GetComponent<BaseStat>();
-       if (target != null)
+       
+       Debug.Log($"총알 충돌 : {other.name}");
+       if (other.TryGetComponent<IDamagable>(out IDamagable target))
        {
-           Debug.Log($"총알 충돌 : {target.name}");
-           target.OnAttacked(damage);
-           GameManager.Instance.AddScore(1);
+           target.TakeDamage(gameObject ,damage);
+           
        }
-       
-       
        
         //리턴하기
         if (_poolObject == null)
@@ -47,7 +44,9 @@ public class Bullet : MonoBehaviour
         {
             _poolObject.ReturnToPool();
         }
+        
     }
 
 
+    
 }

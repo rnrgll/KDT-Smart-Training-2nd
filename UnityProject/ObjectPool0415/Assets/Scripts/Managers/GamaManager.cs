@@ -10,25 +10,21 @@ public class GameManager : Singleton<GameManager>
     private bool _isGameOver = false;
 
     public int Score => _score;
-
     public int HighScore => _highScore;
-   
-    public bool IsGameOver => _isGameOver;
-
+    
     public GameObject gameOverUI;
 
 
-    public UnityEvent<int> OnUpdateScore;
-    public UnityEvent<int> OnUpdateHighScore;
+    public UnityEvent<int> OnUpdateScore = new();
+    public UnityEvent<int> OnUpdateHighScore = new ();
     
     private void Start()
     {
         _score = 0;
-        _highScore = 0;
         _isGameOver = false;
-        gameOverUI.SetActive(false);
     }
     
+
     private void Update()
     {
         
@@ -42,6 +38,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (_isGameOver) return;
 
+        Debug.Log("Add score 호출됨");
         _score += amount;
         OnUpdateScore?.Invoke(_score);
         if (_score > _highScore)
@@ -61,8 +58,12 @@ public class GameManager : Singleton<GameManager>
     
     private void RestartGame()
     {
+        _score = 0;
+        _isGameOver = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    
+    
 
     
 }

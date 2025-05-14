@@ -97,17 +97,6 @@ public class TankControl_Advance : MonoBehaviour
         
     }
     
-    
-    //충돌
-    private void OnCollisionEnter(Collision other)
-    {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Monster"))
-        {
-            Debug.Log("사망");
-            GameManager.Instance.GameOver();
-            Destroy(gameObject);
-        }
-    }
 
     
     private void OnDestroy()

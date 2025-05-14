@@ -8,6 +8,7 @@ public class UI_GameOver : MonoBehaviour
     void Awake()
     {
         GameManager.Instance.gameOverUI = this.gameObject;
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame

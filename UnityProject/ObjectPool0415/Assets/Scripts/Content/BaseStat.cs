@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BaseStat : MonoBehaviour
+public class BaseStat : MonoBehaviour, IDamagable
 {
     [SerializeField] protected int hp;
     [SerializeField] protected int maxHp;
@@ -49,28 +49,19 @@ public class BaseStat : MonoBehaviour
         Hp = MaxHp;
     }
     
-    
-    
-
-    public virtual void OnAttacked(BaseStat attacker)
-    {
-        Hp -= attacker.Attack;
-    }
-    
-    public virtual void OnAttacked(int damage)
-    {
-        
-        Hp -= damage;
-
-    }
-
-
     protected virtual void OnDead()
     {
         Debug.Log($"{gameObject.name} 사망!");
+        
+        //스코어 증가
+        GameManager.Instance.AddScore(1);
+        
         EffectPool.Instance.GetPoolObject(transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
     
-
+    public void TakeDamage(GameObject attacker, int damage)
+    {
+        Hp -= damage;
+    }
 }

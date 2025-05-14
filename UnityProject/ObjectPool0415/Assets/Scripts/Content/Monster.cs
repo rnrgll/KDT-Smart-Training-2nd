@@ -1,24 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-
     [SerializeField] private Transform targetTransform;
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float rotateSpeed = 8f;
     [SerializeField] private float stopDistance = 1.5f;
 
-    
-    
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        targetTransform = GameObject.FindWithTag("Tank").transform;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -31,7 +27,6 @@ public class Monster : MonoBehaviour
         // 일정 거리 이하로 가까워지면 멈추도록 처리
         if (distance < stopDistance)
             return;
-        
         
         direction.Normalize();
       
@@ -64,4 +59,16 @@ public class Monster : MonoBehaviour
 
 
     }
+
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Tank"))
+        {
+            Debug.Log("사망");
+            GameManager.Instance.GameOver();
+            Destroy(other.gameObject);
+        }
+    }
+
 }
