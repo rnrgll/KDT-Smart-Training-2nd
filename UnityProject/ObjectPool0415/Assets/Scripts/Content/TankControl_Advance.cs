@@ -103,7 +103,8 @@ public class TankControl_Advance : MonoBehaviour
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Monster"))
         {
-            Debug.Log("탱크 파괴");
+            Debug.Log("사망");
+            GameManager.Instance.GameOver();
             Destroy(gameObject);
         }
     }

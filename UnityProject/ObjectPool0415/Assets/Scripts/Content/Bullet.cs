@@ -33,6 +33,7 @@ public class Bullet : MonoBehaviour
        {
            Debug.Log($"총알 충돌 : {target.name}");
            target.OnAttacked(damage);
+           GameManager.Instance.AddScore(1);
        }
        
        
