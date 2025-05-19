@@ -140,7 +140,7 @@ public class WeightedMatrixGraph<T>
         }
         return _adjacencyMatrix[from, to] != double.NaN && _adjacencyMatrix[from, to] >= 0;
     }
-
+    
     //그래프 출력
     public void PrintGraph()
     {
